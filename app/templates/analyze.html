@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex flex-column min-vh-100  align-items-center">    
+        <h2>Извлечение сущностей и связей из текста</h2>
+        <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="container-fluid" > 
+                {{ form.text.label_tag }}
+                {{ form.text }}
+            </div>
+            <div class="mb-3">
+                <label for="library">Выберите библиотеку:</label>
+                <select name="library" class="form-control" required>
+                    <option value="natasha">Natasha</option>
+                    <option value="spacy">SpaCy</option>
+                    <option value="stanza">Stanza</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                {{ form.file.label_tag }}
+                {{ form.file }}
+            </div>
+            <button type="submit" class="btn btn-primary">Анализировать</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

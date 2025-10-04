@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h3>Результаты анализа</h3>
+    </div>
+    <div class="card-body">
+        <!-- Исходный текст -->
+        <div class="mb-4">
+            <h4>Исходный текст</h4>
+            <div class="p-3 bg-light rounded">
+                {{ original_text|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Визуализация зависимостей -->
+        <div class="mb-4">
+            <h4>Синтаксические зависимости</h4>
+            <div class="p-3 bg-light rounded overflow-auto">
+                {{ visualization|safe }}
+            </div>
+        </div>
+        <div class="d-flex gap-3 mb-4">
+        <form method="post" action="{% url 'download_text' %}">
+            {% csrf_token %}
+            <input type="hidden" name="text_data" value="{{ processed_text }}">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-file-text"></i> Скачать отчет(текст, морфологический разбор, сущности)
+            </button>
+        </form>
+
+        <!-- Кнопка скачивания визуализации -->
+        <form method="post" action="{% url 'download_visualization' %}">
+            {% csrf_token %}
+            <input type="hidden" name="visualization_html" value="{{ visualization }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-image"></i> Скачать граф связей (SVG)
+            </button>
+        </form>
+
+        <a href="{% url 'analyze' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Новый анализ
+        </a>
+    </div>
+        <!-- Морфологический анализ -->
+        <div class="mb-4">
+            <h4>МОРФОЛОГИЧЕСКИЙ И СИНТАКСИЧЕСКИЙ РАЗБОР</h4>
+            <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Текст</th>
+                        <th>Часть речи</th>
+                        <th>Синтакс. связь(RUS)</th>
+                        <th> Синтакс. связь(EN) </th>
+                        <th>Лемма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for token in morph_analysis %}
+                    <tr>
+                        <td>{{ token.text }}</td>
+                        <td>{{ token.pos }}</td>
+                        <td>{{ token.dep }}</td>
+                        <td>{{ token.dep_original }}</td>
+                        <td>{{ token.lemma }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <!-- Именованные сущности -->
+        <div class="mb-4">
+            <h4>Именованные сущности</h4>
+            {% if entities %}
+                <div class="row">
+                    {% for entity in entities %}
+                    <div class="col-md-4 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ entity.text }}</h5>
+                                <p class="card-text">Тип: {{ entity.label }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Не найдено именованных сущностей</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
