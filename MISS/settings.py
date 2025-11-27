@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-jm-(y72^xe(v$bk4xg9pri)ef=6*pt^1^1&kaub@e_dl9f3s7k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'miss-m1k1.onrender.com'
+]
 
 
 # Application definition
@@ -134,4 +136,5 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'analyze'
+
 LOGOUT_REDIRECT_URL = 'analyze'
