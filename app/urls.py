@@ -7,7 +7,7 @@ urlpatterns = [
     path('accounts/register/', views.register, name='register'),
     
     # Основные пути
-    path('', views.analyze_text_spacy, name='analyze'),
+    path('', views.analyze_text_stanza, name='analyze'),
     path('analyze/natasha/', views.analyze_text_natasha, name='analyze_natasha'),
     path('analyze/stanza/', views.analyze_text_stanza, name='analyze_stanza'),
     path('analyze/spacy/', views.analyze_text_spacy, name='analyze_spacy'),
@@ -17,5 +17,6 @@ urlpatterns = [
     path('download/visualization/', views.download_visualization, name='download_visualization')
 
     
+
 
 ]
